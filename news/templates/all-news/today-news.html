@@ -1,10 +1,8 @@
 {%extends 'all-news/base.html'%}
-
 {% block content %}
 {{block.super}}
 
 <div class="container">
-
     <!-- Looping through news   -->
     {% for news_item in news %}
   
@@ -12,13 +10,15 @@
       <!-- displaying News articles -->
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h2 class="text-center"> {{ news_item.title }} </h2>
+        <h5 class="text-center"> {% autoescape on %}
+          {{news_item.post| safe}}
+         {% endautoescape %} </h5>
+        <h5 class="text-center"> {{ news_item.pub_date }} </h5>
       </div>
-  
-    
 
     <!--Display news Article images  -->
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image">
+        <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image" style="width: 300px; height: 200px; margin-top: 5%">
       </div>
     </div>
   
@@ -28,6 +28,16 @@
     </div>
     {% endfor %}
   
-  </div>
+{% load bootstrap3 %}
+<!-- Some content here-->
+<div class="imgform" style="margin-top: 5%">
+  <form  action="{%url 'newsToday'%}" method="post">
+    {%csrf_token%}
 
+    {% bootstrap_form letterForm layout='inline' %}
+    <input type="submit" value="Subscribe">
+  </form>
+</div>
+</div>
 {% endblock %}
+
